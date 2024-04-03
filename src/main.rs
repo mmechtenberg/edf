@@ -1,10 +1,7 @@
 use std::path::PathBuf;
 
 use clap::Parser;
-use reader::Reader;
-
-mod error;
-mod reader;
+use edf::Reader;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
