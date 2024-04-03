@@ -4,6 +4,7 @@ use std::io;
 use std::result;
 use std::str;
 use std::string;
+use std::num::ParseIntError;
 
 use chrono::ParseError;
 
@@ -28,6 +29,7 @@ pub enum ErrorKind {
 	Io(io::Error),
 	Utf8(str::Utf8Error),
 	Header(HeaderError),
+	ParseError,
 }
 
 impl From<io::Error> for Error {
@@ -50,12 +52,19 @@ impl From<string::FromUtf8Error> for Error {
 
 impl StdError for Error {}
 
+impl From<ParseIntError> for Error {
+	fn from(value: ParseIntError) -> Self {
+		Error::new(ErrorKind::ParseError)
+	}
+}
+
 impl fmt::Display for Error {
 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
 		match *self.0 {
 			ErrorKind::Io(ref err) => err.fmt(f),
 			ErrorKind::Utf8(ref err) => err.fmt(f),
 			ErrorKind::Header(ref err) => err.fmt(f),
+            ErrorKind::ParseError => write!(f, "Could not parse the data."),
 		}
 	}
 }

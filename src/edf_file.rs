@@ -1,8 +1,16 @@
 use chrono::{NaiveDate, NaiveDateTime, NaiveTime};
 use std::fmt;
+use ndarray::prelude::*;
 
 pub struct EdfFile {
-    pub header : Header
+    pub header : Header,
+	pub signal_header : SignalHeader
+}
+
+impl EdfFile {
+	pub fn new (header : Header, signal_header : SignalHeader) -> EdfFile {
+		EdfFile {header, signal_header}
+	}
 }
 
 pub struct Header {
@@ -65,6 +73,40 @@ impl fmt::Display for Header {
 			records_len,
 			self.duration,
 			self.signals_len
+		)
+	}
+}
+
+#[derive(Default, Debug)]
+pub struct SignalHeader {
+    pub labels: Vec<String>,
+    pub transducer_type: Vec<String>,
+    pub physical_dimension: Vec<String>,
+
+    pub physical_min: Array1<f64>,
+    pub physical_max: Array1<f64>,
+    pub digital_min:  Array1<f64>,
+    pub digital_max:  Array1<f64>,
+
+    pub prefiltering: Vec<String>,
+    pub samples_in_record: Vec<u64>,
+
+    pub reserved_field: Vec<String>,
+}
+
+impl fmt::Display for SignalHeader {
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+		write!(
+			f,
+			"\n## Signal Header\nLabels: \n\t{:?}\nTransducer Type: \n\t{:?}\nPhysical Dimensions: \n\t{:?} \nPhysical Minimum: \n\t{:?}\nPhysical Maximum \n\t{:?}\nDigital Minimum: \n\t{:?}\nDigital Maximum: \n\t{:?}\n",
+			self.labels,
+			self.transducer_type,
+			self.physical_dimension,
+
+			self.physical_min,
+			self.physical_max,
+			self.digital_min,
+			self.digital_max,
 		)
 	}
 }

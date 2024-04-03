@@ -16,8 +16,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let args = Args::parse();
 
 	let path = args.input;
-	let hdr = Reader::from_path(path)?;
-	println!("{}", hdr);
-	println!("Start datetime: {}", hdr.start_datetime);
+	let edf_file = Reader::from_path(path)?;
+	println!("{}", edf_file.header);
+	println!("Start datetime: {}", edf_file.header.start_datetime);
+	println!("{}", edf_file.signal_header);
 	Ok(())
 }
