@@ -20,5 +20,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	println!("{}", edf_file.header);
 	println!("Start datetime: {}", edf_file.header.start_datetime);
 	println!("{}", edf_file.signal_header);
+	println!("##data\n{}", edf_file.data);
 	Ok(())
 }

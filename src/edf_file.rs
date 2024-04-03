@@ -4,12 +4,14 @@ use ndarray::prelude::*;
 
 pub struct EdfFile {
     pub header : Header,
-	pub signal_header : SignalHeader
+	pub signal_header : SignalHeader,
+
+	pub data : Array2<f64>
 }
 
 impl EdfFile {
-	pub fn new (header : Header, signal_header : SignalHeader) -> EdfFile {
-		EdfFile {header, signal_header}
+	pub fn new (header : Header, signal_header : SignalHeader, data : Array2<f64>) -> EdfFile {
+		EdfFile {header, signal_header, data}
 	}
 }
 
